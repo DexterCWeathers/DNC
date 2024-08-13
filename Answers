@@ -1,0 +1,35 @@
+Question One: 
+    SELECT gift_date AS donation_day, 
+  COUNT(contribution_id) AS total_donations, 
+  COUNT(DISTINCT donor_id) AS unique_donors, 
+  SUM(gift_amount) AS total_revenue
+ FROM `cogent-theater-432403-e2.contribution_id.Donations` 
+ GROUP BY gift_date
+ ORDER BY donation_day
+ LIMIT 1000
+
+
+Questions Two
+
+SELECT ROUND((SUM(opens) * 100.0) / SUM(total_sent), 2) AS open_rate
+ FROM `cogent-theater-432403-e2.Campaign_metadata.Campaign` 
+ LIMIT 1000
+
+
+Question Three: 
+
+SELECT 
+CONCAT(
+  ROUND(
+    (SUM(CASE WHEN recurring_period = 'MONTHLY'AND recurring_sequence = 1 THEN 1 ELSE 0 END) * 100.0)/ COUNT(order_number)
+    , 0), '%') AS Conversion_rate
+FROM `cogent-theater-432403-e2.processor_metadata.processor_metadata` 
+LIMIT 1000
+
+Question Four: 
+SELECT
+  COUNT(order_number) AS Active_Recurring_Gift
+
+FROM `cogent-theater-432403-e2.processor_metadata.processor_metadata`
+WHERE recurring_period = 'MONTHLY'
+  AND gift_date BETWEEN '2021-05-01' AND '2021-05-31'
